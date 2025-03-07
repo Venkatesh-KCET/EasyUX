@@ -1,0 +1,8 @@
+django-viewcomponent
+django-compressor
+
+[dev]
+coverage
+mypy
+pytest
+ruff

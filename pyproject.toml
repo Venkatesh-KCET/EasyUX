@@ -18,7 +18,8 @@ classifiers = [
 ]
 license = {text = "MIT license"}
 dependencies = [
-  
+    "django-viewcomponent",
+    "django-compressor"
 ]
 
 [project.optional-dependencies]
