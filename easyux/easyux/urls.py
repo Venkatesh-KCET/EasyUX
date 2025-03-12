@@ -1,5 +1,5 @@
 """
-URL configuration for sample project.
+URL configuration for easyux project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -19,5 +19,5 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('core_ui/', include('core_ui.urls')),
+    path('openui/', include('openui.urls')),
 ]
