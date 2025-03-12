@@ -1,0 +1,44 @@
+{
+    "components": [
+      {
+        "name": "button",
+        "version": "1.0.0",
+        "description": "A reusable button component with dynamic props and lifecycle hooks.",
+        "props": {
+          "label": {
+            "type": "string",
+            "default": "Click Me"
+          },
+          "color": {
+            "type": "string",
+            "default": "primary"
+          },
+          "size": {
+            "type": "string",
+            "default": "md"
+          },
+          "type": {
+            "type": "string",
+            "default": "button"
+          },
+          "icon": {
+            "type": "string",
+            "default": null
+          },
+          "id": {
+            "type": "string",
+            "default": ""
+          },
+          "class": {
+            "type": "string",
+            "default": ""
+          },
+          "onclick": {
+            "type": "string",
+            "default": ""
+          }
+        }
+      }
+    ]
+  }
+  

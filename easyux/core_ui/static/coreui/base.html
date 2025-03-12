@@ -1,0 +1,26 @@
+{# engine/templates/coreui/base.html #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}django-coreui{% endblock %}</title>
+    {% block css %}
+        {# Inject component-specific CSS here #}
+        <link rel="stylesheet" href="{% static 'coreui/base.css' %}">
+    {% endblock %}
+    {% block meta %}
+        {# SEO meta tags, Open Graph, Twitter Cards can be injected here #}
+    {% endblock %}
+</head>
+<body>
+    <div class="coreui-container">
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% block script %}
+        {# Inject component-specific JS here #}
+        <script src="{% static 'coreui/base.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

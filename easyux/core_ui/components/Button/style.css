@@ -1,0 +1,35 @@
+.coreui-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+.coreui-btn-primary {
+    background-color: #3b82f6;
+    color: #fff;
+}
+
+.coreui-btn-danger {
+    background-color: #ef4444;
+    color: #fff;
+}
+
+.coreui-btn-sm {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+}
+
+.coreui-btn-md {
+    font-size: 0.875rem;
+}
+
+.coreui-btn-lg {
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+}
