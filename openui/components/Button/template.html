@@ -1,0 +1,12 @@
+<button
+  type="{{ prop1|default:'button' }}"
+  class="btn {{ prop2|default:'' }}"
+>
+  {{ slots.default|safe }}
+
+  {% if slots.named_slot %}
+    <span class="slot-content">
+      {{ slots.named_slot|safe }}
+    </span>
+  {% endif %}
+</button>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% dj "Button" prop1="value1" prop2="value2" %}
+        Default slot content
+        {% slot "named_slot" %}
+            Named slot content
+        {% endslot %}
+    {% enddj %}
+
+</body>
+</html>

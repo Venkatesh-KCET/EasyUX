@@ -1,0 +1,48 @@
+{
+    "name": "button",
+    "version": "1.0.0",
+    "description": "A reusable button component with label, theme, and size props.",
+    "props": {
+      "label": {
+        "type": "string",
+        "default": "Click Me",
+        "description": "Text label inside the button"
+      },
+      "color": {
+        "type": "string",
+        "default": "primary",
+        "description": "Color theme of the button (e.g., primary, danger)"
+      },
+      "size": {
+        "type": "string",
+        "default": "md",
+        "description": "Size of the button (sm, md, lg)"
+      },
+      "type": {
+        "type": "string",
+        "default": "button",
+        "description": "Button type (submit, reset, button)"
+      },
+      "icon": {
+        "type": "string",
+        "default": null,
+        "description": "Optional icon class (e.g., fa fa-check)"
+      },
+      "id": {
+        "type": "string",
+        "default": "",
+        "description": "HTML ID attribute"
+      },
+      "class": {
+        "type": "string",
+        "default": "",
+        "description": "Extra CSS classes"
+      },
+      "onclick": {
+        "type": "string",
+        "default": "",
+        "description": "Alpine.js compatible click handler"
+      }
+    }
+  }
+  

@@ -1,0 +1,18 @@
+<button
+    type="{{ props.type }}"
+    id="{{ props.id }}"
+    class="{{ props.class }}"
+    {% for attr, value in props.items %}
+        {% if attr not in ['type', 'id', 'class', 'label'] and value %}
+            {{ attr }}="{{ value }}"
+        {% endif %}
+    {% endfor %}
+>
+    {% if props.icon %}
+        <i class="{{ props.icon }}"></i>
+    {% endif %}
+    {{ props.label }}
+    {% if slots.default %}
+        {{ slots.default }}
+    {% endif %}
+</button>
