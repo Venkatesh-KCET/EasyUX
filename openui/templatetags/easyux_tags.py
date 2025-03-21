@@ -1,24 +1,12 @@
-import os
 from django.conf import settings
 from django import template
-from django.template import Node, TemplateSyntaxError, loader, Context, Template, TemplateSyntaxError
+from django.template import Node, TemplateSyntaxError, Context, Template
+
+import importlib.util
+import sys
+import os
 
 register = template.Library()
-
-def load_component_from_file(component_name):
-    # Define base components folder — can be absolute or relative
-    base_path = os.path.join(settings.BASE_DIR, "openui", "components", component_name)
-
-    # Build full file path
-    file_path = os.path.join(base_path, "template.html")
-
-    if not os.path.exists(file_path):
-        raise TemplateSyntaxError(f"Component file not found: {file_path}")
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        template_code = f.read()
-
-    return Template(template_code)  # ⬅️ Now you can render with Context()
 
 class ComponentNode(Node):
     def __init__(self, component_name, kwargs, nodelist, slots):
@@ -26,6 +14,41 @@ class ComponentNode(Node):
         self.kwargs = kwargs
         self.nodelist = nodelist
         self.slots = slots
+
+        component = self.component_name.resolve(component_name)
+        self.base_path = os.path.join(settings.BASE_DIR, "openui", "components", component)
+    
+    def read_file(self, file_name):
+        # Build full file path
+        file_path = os.path.join(self.base_path, file_name)
+
+        if not os.path.exists(file_path):
+            raise TemplateSyntaxError(f"File not found: {file_path}")
+
+        with open(file_path, "r", encoding="utf-8") as f:
+            template_code = f.read()
+        
+        return template_code
+    
+    def import_component_logic(self, module_name, file_path):
+        spec = importlib.util.spec_from_file_location(module_name, file_path)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[module_name] = module
+        spec.loader.exec_module(module)
+        return module
+
+    def load_component(self, component_name):
+        file_path = os.path.join(self.base_path, 'component.py')
+        ComponentLogic = self.import_component_logic("render", file_path)
+
+        template_code = '{% load compress %}'
+        template_code += "{% compress js file %}<script>" + self.read_file("script.js") + "</script>{% endcompress %}"
+        template_code += "{% compress css file %}<style>" + self.read_file( "style.css") + "</style>{% endcompress %}"
+
+        template_code = template_code + ComponentLogic.render()
+        template_code = Template(template_code)
+
+        return template_code# ⬅️ Now you can render with Context()
 
     def render(self, context):
         component = self.component_name.resolve(context)
@@ -43,12 +66,12 @@ class ComponentNode(Node):
         # Inject slots into context
         render_context = Context({**props, "slots": rendered_slots}, autoescape=context.autoescape)
 
-        print(render_context)
-
         try:
-            tmpl = load_component_from_file(component)
+            tmpl = self.load_component(component)
         except Exception as e:
             raise TemplateSyntaxError(f"Component template 'openui/{component}/template.html' not found: {e}")
+        
+        print(render_context)
 
         return tmpl.render(render_context)
 

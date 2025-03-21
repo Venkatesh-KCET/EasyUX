@@ -1,35 +1,15 @@
-from base_component import BaseComponent
+from django.conf import settings
+from django.template import TemplateSyntaxError, Template
 
-class ButtonComponent(BaseComponent):
-    name = "button"
-    template_path = "coreui/components/Button/template.html"
-    css_path = "coreui/components/Button/style.css"
-    js_path = "coreui/components/Button/script.js"
+import os
 
-    props = {
-        "label": "Click Me",
-        "color": "primary",   # Bootstrap-style: primary, danger, etc.
-        "size": "md",         # sm, md, lg
-        "type": "button",     # submit, reset, button
-        "icon": None,
-        "id": "",
-        "class": "",
-        "onclick": "",
-    }
+def render():
+    file_path = os.path.join(settings.BASE_DIR, "openui", "components", "Button", "template.html")
 
-    def get_context_data(self):
-        return {
-            "props": self.attributes,
-            "slots": self.slots,
-        }
+    if not os.path.exists(file_path):
+        raise TemplateSyntaxError(f"File not found: {file_path}")
 
-    def before_render(self):
-        classes = [
-            "coreui-btn",
-            f"coreui-btn-{self.attributes.get('color', 'primary')}",
-            f"coreui-btn-{self.attributes.get('size', 'md')}",
-            self.attributes.get("class", "")
-        ]
-        self.attributes["class"] = " ".join(filter(None, classes))
-        if self.attributes.get("onclick"):
-            self.attributes["x-on:click"] = self.attributes["onclick"]
+    with open(file_path, "r", encoding="utf-8") as f:
+        template_code = f.read()
+    
+    return template_code
