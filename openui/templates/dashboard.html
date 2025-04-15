@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Welcome to {{ organization.name | safe }}</h1>
+    <h1>Welcome {% if organization %}to {{ organization.name | safe }} {% else %} {{ message | safe }} {% endif %}</h1>
 </body>
 </html>

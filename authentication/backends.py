@@ -1,23 +1,26 @@
 from django.contrib.auth.backends import BaseBackend
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
+
+UserModel = get_user_model()
 
 class MyCustomAuthBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None):
+        print('Running')
         try:
             # Treat username as email for login
-            user = User.objects.get(email=username)
+            print(username, password)
+            user = UserModel.objects.get(email=username)
 
             if user.check_password(password):
                 return user
-            else:
-                return None
-        except ObjectDoesNotExist:
+            return None
+        except UserModel.DoesNotExist:
+            print('User does not exist')
             return None
 
     def get_user(self, user_id):
         try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
+            return UserModel.objects.get(pk=user_id)
+        except UserModel.DoesNotExist:
             return None

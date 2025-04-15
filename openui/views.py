@@ -53,13 +53,15 @@ def dashboard_view(request):
     if not user.is_authenticated:
         return redirect('login')
 
-    email = user.email
-    org_name = get_org_name_from_email(email)
+    org_id = user.organization_id
 
-    print(org_name)
-
-    if org_name:
-        organization = get_object_or_404(Organization, name__iexact=org_name)
+    if org_id:
+        try:
+            # Fetch the organization using the org_name
+            organization = Organization.objects.get(pk=org_id)
+        except Organization.DoesNotExist:
+            # Handle the case where the organization does not exist
+            return render(request, 'dashboard.html', {'message': 'Superuser'})
         context = {
             'organization': organization
         }
