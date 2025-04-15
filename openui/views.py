@@ -67,4 +67,4 @@ def dashboard_view(request):
         }
         return render(request, 'dashboard.html', context)
     else:
-        return render(request, 'error.html', {'message': 'Invalid email format'})
+        return render(request, 'dashboard.html', {'message': 'Superuser'})
