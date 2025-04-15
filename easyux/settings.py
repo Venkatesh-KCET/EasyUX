@@ -34,6 +34,12 @@ DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = []
 
+# settings.py
+AUTHENTICATION_BACKENDS = [
+    'authentication.backends.MyCustomAuthBackend',
+    # 'django.contrib.auth.backends.ModelBackend',
+]
+
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
@@ -103,11 +109,11 @@ TEMPLATES = [
             "builtins": [
                 "openui.templatetags.easyux_tags",
             ],
-            'loaders': [
-                # Loaders are applied in order
-                'django.template.loaders.filesystem.Loader',  # Load templates from DIRS
-                'django.template.loaders.app_directories.Loader',  # Load templates from app 'templates' folders
-            ],
+            # 'loaders': [
+            #     # Loaders are applied in order
+            #     'django.template.loaders.filesystem.Loader',  # Load templates from DIRS
+            #     'django.template.loaders.app_directories.Loader',  # Load templates from app 'templates' folders
+            # ],
         },
     },
 ]
@@ -224,4 +230,9 @@ ACCOUNT_LOGIN_METHODS = {"email"}
 
 
 # LOGIN_REDIRECT_URL after successful authentication
-LOGIN_REDIRECT_URL = '/accounts/google/login/callback/'  # Redirect user to their profile page
+# LOGIN_REDIRECT_URL = '/accounts/google/login/callback/'  # Redirect user to their profile page
+
+LOGIN_URL = 'admin/login/'  # custom login page
+LOGIN_REDIRECT_URL = '/dashboard/'  # where to go after login
+
+AUTH_USER_MODEL = 'authentication.CustomUser'
