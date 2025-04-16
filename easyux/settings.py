@@ -46,7 +46,6 @@ AUTHENTICATION_BACKENDS = [
 # APPS
 # ------------------------------------------------------------------------------
 DJANGO_APPS = [
-    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -63,6 +62,8 @@ THIRD_PARTY_APPS = [
     "unfold.contrib.import_export",  # optional, if django-import-export package is used
     "unfold.contrib.guardian",  # optional, if django-guardian package is used
     "unfold.contrib.simple_history",  # optional, if django-simple-history package is used
+
+    "django.contrib.admin",
 
     # Custom Fields in Model
     "phonenumber_field",
