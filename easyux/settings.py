@@ -230,9 +230,8 @@ ACCOUNT_LOGIN_METHODS = {"email"}
 
 
 # LOGIN_REDIRECT_URL after successful authentication
-# LOGIN_REDIRECT_URL = '/accounts/google/login/callback/'  # Redirect user to their profile page
+LOGIN_REDIRECT_URL = '/accounts/google/login/callback/'  # Redirect user to their profile page
 
 LOGIN_URL = 'admin/login/'  # custom login page
-LOGIN_REDIRECT_URL = '/dashboard/'  # where to go after login
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
