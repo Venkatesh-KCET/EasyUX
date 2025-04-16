@@ -30,9 +30,12 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG')
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = []
+if env('ENVIRONMENT') == 'production' and DEBUG:
+    raise ValueError("DEBUG must be False in production!")
+
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS') if env('ENVIRONMENT') == 'production' else ['*']
 
 # settings.py
 AUTHENTICATION_BACKENDS = [
@@ -52,7 +55,18 @@ DJANGO_APPS = [
     "django.contrib.sites",
 ]
 
-THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS = [
+    "unfold",  # before django.contrib.admin
+    "unfold.contrib.filters",  # optional, if special filters are needed
+    "unfold.contrib.forms",  # optional, if special form elements are needed
+    "unfold.contrib.inlines",  # optional, if special inlines are needed
+    "unfold.contrib.import_export",  # optional, if django-import-export package is used
+    "unfold.contrib.guardian",  # optional, if django-guardian package is used
+    "unfold.contrib.simple_history",  # optional, if django-simple-history package is used
+
+    # Custom Fields in Model
+    "phonenumber_field",
+]
 
 if env.bool('GOOGLE_LOGIN'):
     THIRD_PARTY_APPS.extend([
@@ -64,6 +78,7 @@ if env.bool('GOOGLE_LOGIN'):
 
 LOCAL_APPS = [
     'openui',
+    'core',
     'authentication'
 ]
 
@@ -95,7 +110,7 @@ ROOT_URLCONF = 'easyux.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':[ BASE_DIR/'openui/templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'openui', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -109,11 +124,6 @@ TEMPLATES = [
             "builtins": [
                 "openui.templatetags.easyux_tags",
             ],
-            # 'loaders': [
-            #     # Loaders are applied in order
-            #     'django.template.loaders.filesystem.Loader',  # Load templates from DIRS
-            #     'django.template.loaders.app_directories.Loader',  # Load templates from app 'templates' folders
-            # ],
         },
     },
 ]
@@ -208,6 +218,14 @@ LOCALE_PATHS = [os.path.join(BASE_DIR, 'locale')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_SSL_REDIRECT = not DEBUG
+SESSION_COOKIE_HTTPONLY = not DEBUG # Prevents the browser from accessing the cookie via JavaScript
+SESSION_COOKIE_SAMESITE = 'Strict' # Prevents cookie from being sent in cross-site requests
+CSRF_COOKIE_HTTPONLY = not DEBUG # Ensures CSRF cookie is not accessible via JS
+CSRF_COOKIE_SAMESITE = 'Strict' # Ensures CSRF cookie uses SameSite policy
+
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -226,8 +244,6 @@ SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 ACCOUNT_LOGIN_METHODS = {"email"}
-
-
 
 # LOGIN_REDIRECT_URL after successful authentication
 LOGIN_REDIRECT_URL = '/accounts/google/login/callback/'  # Redirect user to their profile page
